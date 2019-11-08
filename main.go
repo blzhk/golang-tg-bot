@@ -9,27 +9,30 @@ import (
 
 func main() {
 	var (
-		port = os.Getenv("PORT")
+		port      = os.Getenv("PORT")
 		publicURL = os.Getenv("PUBLIC_URL")
-		token = os.Getenv("TOKEN")
+		token     = os.Getenv("TOKEN")
 	)
 
 	webhook := &tb.Webhook{
-		Listen: ":" + port,
-		Endpoint: &tb.WebhookEndpoint{PublicURL:publicURL},
+		Listen:   ":" + port,
+		Endpoint: &tb.WebhookEndpoint{PublicURL: publicURL},
 	}
 
 	pref := tb.Settings{
-		Token:    token,
-		Poller:   webhook,
+		Token:  token,
+		Poller: webhook,
 	}
 
 	bot, err := tb.NewBot(pref)
-	if  err != nil {
+	if err != nil {
 		log.Fatal(err)
 	}
 
 	bot.Handle("/hello", func(m *tb.Message) {
-		bot.Send(m.Sender, "Hi!")
+		_, err := bot.Send(m.Sender, "Hi!")
+		if err != nil {
+			log.Fatal(err)
+		}
 	})
 }
