@@ -24,15 +24,13 @@ func main() {
 		Poller: webhook,
 	}
 
-	bot, err := tb.NewBot(pref)
+	b, err := tb.NewBot(pref)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	bot.Handle("/hello", func(m *tb.Message) {
-		_, err := bot.Send(m.Sender, "Hi!")
-		if err != nil {
-			log.Fatal(err)
-		}
+	b.Handle("/hello", func(m *tb.Message) {
+		b.Send(m.Sender, "Hi!")
 	})
+
 }
